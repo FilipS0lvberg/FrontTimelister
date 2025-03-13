@@ -257,9 +257,9 @@ def create_workbook1(year: int, quarter: int, selskap: str, prosjekttittel: str,
     # Rapporteringsark ansattes timer per måned, per ansatt
     for index, worker in enumerate(workers):
         ws0[f"B{10+index+1}"] = f"={worker}!D2"
-        ws0[f"C{10+index+1}"] = f"=SUMIF({worker}!D10:D100,Rapport!C10,{worker}!E10:E100)"
-        ws0[f"D{10+index+1}"] = f"=SUMIF({worker}!D10:D100,Rapport!D10,{worker}!E10:E100)"
-        ws0[f"E{10+index+1}"] = f"=SUMIF({worker}!D10:D100,Rapport!E10,{worker}!E10:E100)"
+        ws0[f"C{10+index+1}"] = f"=SUMIF({worker}!D10:D{9+len(dates_in_quarter)},Rapport!C10,{worker}!E10:E{9+len(dates_in_quarter)})"
+        ws0[f"D{10+index+1}"] = f"=SUMIF({worker}!D10:D{9+len(dates_in_quarter)},Rapport!D10,{worker}!E10:E{9+len(dates_in_quarter)})"
+        ws0[f"E{10+index+1}"] = f"=SUMIF({worker}!D10:D{9+len(dates_in_quarter)},Rapport!E10,{worker}!E10:E{9+len(dates_in_quarter)})"
         ws0[f"F{10+index+1}"] = f"=SUM(C{10+index+1}:E{10+index+1})"
         ws0[f"F{10+index+1}"].fill = fill2
 
@@ -267,16 +267,16 @@ def create_workbook1(year: int, quarter: int, selskap: str, prosjekttittel: str,
     ws0[f"B{10 + len(workers) + 1}"] = f"Sum Totalt"
     ws0[f"B{10 + len(workers) + 1}"].fill = fill2
 
-    ws0[f"C{10 + len(workers) + 1}"] = f"=SUM(C{11}:C{11 + len(workers)})"
+    ws0[f"C{10 + len(workers) + 1}"] = f"=SUM(C{11}:C{10 + len(workers)})"
     ws0[f"C{10 + len(workers) + 1}"].fill = fill2
 
-    ws0[f"D{10 + len(workers) + 1}"] = f"=SUM(D{11}:D{11 + len(workers)})"
+    ws0[f"D{10 + len(workers) + 1}"] = f"=SUM(D{11}:D{10 + len(workers)})"
     ws0[f"D{10 + len(workers) + 1}"].fill = fill2
     
-    ws0[f"E{10 + len(workers) + 1}"] = f"=SUM(E{11}:E{11 + len(workers)})"
+    ws0[f"E{10 + len(workers) + 1}"] = f"=SUM(E{11}:E{10 + len(workers)})"
     ws0[f"E{10 + len(workers) + 1}"].fill = fill2
 
-    ws0[f"F{10 + len(workers) + 1}"] = f"=SUM(F{11}:F{11 + len(workers)})"
+    ws0[f"F{10 + len(workers) + 1}"] = f"=SUM(F{11}:F{10 + len(workers)})"
     ws0[f"F{10 + len(workers) + 1}"].fill = fill2
 
     start_cell1 = "B10"
