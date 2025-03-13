@@ -1,4 +1,4 @@
-from openpyxl.workbook import *
+from openpyxl.workbook import Workbook
 from openpyxl.styles import Font, Color, Alignment, Border, Side, PatternFill
 from supporting_functions import get_dates_in_quarter, get_first_letters_dict
 import io
@@ -290,10 +290,10 @@ def create_workbook1(year: int, quarter: int, selskap: str, prosjekttittel: str,
 
 
     # save workbook
-    wb.save("testbook.xlsx")
-    # bio = io.BytesIO()
-    # wb.save(bio)
-    # return bio.getvalue()
+    #wb.save("testbook.xlsx")
+    bio = io.BytesIO()
+    wb.save(bio)
+    return bio.getvalue()
 
 
 
