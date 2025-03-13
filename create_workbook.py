@@ -249,7 +249,7 @@ def create_workbook1(year: int, quarter: int, selskap: str, prosjekttittel: str,
         new_sheet[f"C{end_row1 + 5}"] = "=D2"
         new_sheet[f"C{end_row1 + 6}"] = "Prosjektdeltaker"
         new_sheet[f"G{end_row1 + 5}"] = "=D6"
-        new_sheet[f"G{end_row1 + 5}"] = "Prosjektleder"
+        new_sheet[f"G{end_row1 + 6}"] = "Prosjektleder"
 
 
 
@@ -290,10 +290,10 @@ def create_workbook1(year: int, quarter: int, selskap: str, prosjekttittel: str,
 
 
     # save workbook
-    # wb.save("testbook.xlsx")
-    bio = io.BytesIO()
-    wb.save(bio)
-    return bio.getvalue()
+    wb.save("testbook.xlsx")
+    # bio = io.BytesIO()
+    # wb.save(bio)
+    # return bio.getvalue()
 
 
 
