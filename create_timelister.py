@@ -4,7 +4,7 @@ from supporting_functions import get_dates_in_quarter, get_first_letters_dict
 import io
 
 
-def create_workbook1(year: int, quarter: int, selskap: str, prosjekttittel: str, prosjektnummer: str, prosjektleder: str, workers: list, prosject_description: str, num_workpackages: int):
+def create_timelister1(year: int, quarter: int, selskap: str, prosjekttittel: str, prosjektnummer: str, prosjektleder: str, workers: list, prosject_description: str, num_workpackages: int):
     # Create workbook
     wb = Workbook()
 
@@ -318,4 +318,4 @@ Arbeidspakke 3: Testing og iterasjon
 Aktivitet 1: Privat beta testing
 Aktivitet 2: Iterere"""
     )
-    create_workbook1(2025, 3, "Front Innovation", "Test Prosjekt", "69420", "Filip S.H.", ["Filip", "Gashi"], desc, 4)
+    create_timelister1(2025, 3, "Front Innovation", "Test Prosjekt", "69420", "Filip S.H.", ["Filip", "Gashi"], desc, 4)
