@@ -1,51 +1,5 @@
 from datetime import date, timedelta
 
-# def get_dates_in_quarter(year: int, quarter: int) -> list:
-#     """
-#     Return a list of tuples for each date in the specified quarter of the year.
-#     Each tuple looks like: (date_string, weekend_indicator)
-#       - date_string is in 'DD.MM.YYYY' format
-#       - weekend_indicator is 1 if it’s a weekend (Sat or Sun), else 0
-    
-#     :param year: The year (e.g., 2025).
-#     :param quarter: The quarter number (1, 2, 3, or 4).
-#     :return: List of (date_str, weekend_flag) tuples.
-#     """
-#     # Define the start and end months for each quarter
-#     quarter_months = {
-#         1: (1, 3),   # Q1: January through March
-#         2: (4, 6),   # Q2: April through June
-#         3: (7, 9),   # Q3: July through September
-#         4: (10, 12)  # Q4: October through December
-#     }
-    
-#     if quarter not in quarter_months:
-#         raise ValueError("Quarter must be an integer from 1 to 4.")
-    
-#     start_month, end_month = quarter_months[quarter]
-    
-#     # Compute the start and end date for the quarter
-#     start_date = date(year, start_month, 1)
-#     if end_month == 12:
-#         # For Q4, go to January 1st of the next year and subtract one day
-#         end_date = date(year + 1, 1, 1) - timedelta(days=1)
-#     else:
-#         # For other quarters, go to the 1st of the month after end_month and subtract a day
-#         end_date = date(year, end_month + 1, 1) - timedelta(days=1)
-    
-#     # Build the list of (date_str, weekend_flag)
-#     dates_in_quarter = []
-#     current_date = start_date
-#     while current_date <= end_date:
-#         # weekday(): Monday=0 ... Sunday=6
-#         is_weekend = 1 if current_date.weekday() >= 5 else 0
-#         date_str = current_date.strftime("%d.%m.%Y")
-#         dates_in_quarter.append((date_str, is_weekend))
-        
-#         current_date += timedelta(days=1)
-    
-#     return dates_in_quarter
-
 
 def get_dates_in_quarter(year: int, quarter: int) -> list:
     """

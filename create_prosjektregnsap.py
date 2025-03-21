@@ -1,6 +1,5 @@
 from openpyxl.workbook import Workbook
 from openpyxl.styles import Font, Color, Alignment, Border, Side, PatternFill
-from supporting_functions import get_dates_in_quarter, get_first_letters_dict
 import io
 
 def create_prosjektregnskap1(year: int, juridisknavn: str, project_number: int, project_title: str, godkjent_periode: str, status_dato: str, status: str, godkjent_dato: str, kategori: str, selskap_vansker: str, cost_options):
@@ -83,11 +82,31 @@ def create_prosjektregnskap1(year: int, juridisknavn: str, project_number: int, 
     ws0["B16"].border = border_u
     ws0["c16"].border = border_u
 
-    # TODO DETTE MÅ GJØRES NOE MED FOR HVER OPTION
-    ws0["B17"] = "Timer"
-    ws0["B18"] = "Prosjektkostnader"
-    ws0["B19"] = "Bruk av eget utstyr"
-    ws0["B20"] = "Kapitalkostnader"
+    ## cost_opts = ["Timekostnader", "Prosjektkostnader", "Bruk av eget utstyr", "Kapitalkostnader"]
+    counter = 0
+    for option in cost_options:
+        row = 17 + counter
+        if option == "Timekostnader":
+            ws0[f"B{row}"] = "Timer"
+            ws0[f"C{row}"] = "=Timekostnader!F25"
+            counter += 1
+        
+        if option == "Prosjektkostnader":
+            ws0[f"B{row}"] = "Prosjektkostnader"
+            ws0[f"C{row}"] = "=Prosjektkostnader!F31"
+            counter += 1
+
+        if option == "Bruk av eget utstyr":
+            ws0[f"B{row}"] = "Bruk av eget utstyr"
+            ws0[f"C{row}"] = "='Bruk av eget utstyr'!H16"
+            counter += 1
+
+        if option == "Kapitalkostnader":
+            ws0[f"B{row}"] = "Kapitalkostnader"
+            ws0[f"C{row}"] = "='Kapitalkostnader'!H16"
+            counter += 1
+
+
     ws0["B20"].border = border_u
     ws0["C20"].border = border_u
 
@@ -134,15 +153,15 @@ def create_prosjektregnskap1(year: int, juridisknavn: str, project_number: int, 
 
         ws1["B4"] = "Selskap"
         ws1["F4"] = juridisknavn
-        ws1["F4"].align = Alignment(horizontal="right")
+        ws1["F4"].alignment = Alignment(horizontal="right")
 
         ws1["B5"] = "Prosjektnummer"
         ws1["F5"] = project_number
-        ws1["F5"].align = Alignment(horizontal="right")
+        ws1["F5"].alignment = Alignment(horizontal="right")
 
         ws1["B6"] = "Prosjekttittel"
         ws1["F6"] = project_title
-        ws1["F6"].align = Alignment(horizontal="right")
+        ws1["F6"].alignment = Alignment(horizontal="right")
 
         start_cell = "B4"
         end_cell = "F6"
@@ -205,17 +224,297 @@ def create_prosjektregnskap1(year: int, juridisknavn: str, project_number: int, 
 
 
 
-    # page for prosjektkostnader
-    #if "Prosjektkostnader" in cost_options:
 
+    ###############################################################################################################################
+    # page for prosjektkostnader
+    if "Prosjektkostnader" in cost_options:
+        ws2 = wb.create_sheet("Prosjektkostnader")
+        ws2.sheet_view.showGridLines = False
+
+        ws2["B2"] = f"Timekostnader"
+        ws2["B2"].font = Font(size=20, bold=True)
+
+        ws2.column_dimensions['B'].width = 30
+        ws2.column_dimensions['C'].width = 20
+        ws2.column_dimensions['D'].width = 20
+        ws2.column_dimensions['E'].width = 20
+        ws2.column_dimensions['F'].width = 20
+        ws2.column_dimensions['G'].width = 20
+
+        ws2["B4"] = "Selskap"
+        ws2["E4"] = juridisknavn
+        ws2["E4"].alignment = Alignment(horizontal="right")
+
+        ws2["B5"] = "Prosjektnummer"
+        ws2["E5"] = project_number
+        ws2["E5"].alignment = Alignment(horizontal="right")
+
+        ws2["B6"] = "Prosjekttittel"
+        ws2["E6"] = project_title
+        ws2["E6"].alignment = Alignment(horizontal="right")
+
+        start_cell = "B4"
+        end_cell = "E6"
+        cell_range = ws2[start_cell:end_cell]
+
+        for row in cell_range:
+            for cell in row:
+                cell.border = border_u
+
+        # Timer table
+        ws2["B9"] = "Leverandør"
+        ws2["B9"].font = Font(size=12, bold=True)
+        ws2["B9"].fill = fill_lg
+
+        ws2["C9"] = "Kommentar"
+        ws2["C9"].font = Font(size=12, bold=True)
+        ws2["C9"].fill = fill_lg
+
+        ws2["D9"] = "Fakturanr/ID"
+        ws2["D9"].font = Font(size=12, bold=True)
+        ws2["D9"].fill = fill_lg
+
+        ws2["E9"] = "Kontonummer"
+        ws2["E9"].font = Font(size=12, bold=True)
+        ws2["E9"].fill = fill_lg
+
+        ws2["F9"] = "Beløp, eks. MVA"
+        ws2["F9"].font = Font(size=12, bold=True)
+        ws2["F9"].fill = fill_lg
+
+        ws2["G9"] = "Forfallsdato"
+        ws2["G9"].font = Font(size=12, bold=True)
+        ws2["G9"].fill = fill_lg
+
+        for i in range(20):
+            ws2[f"F{10+i}"].alignment = Alignment(horizontal="right")
+            ws2[f"F{10+i}"].number_format = '#,##0.00kr' 
+
+        ws2["B31"] = "Sum"
+        ws2["B31"].fill = fill_lg
+        ws2["C31"].fill = fill_lg
+        ws2["D31"].fill = fill_lg
+        ws2["E31"].fill = fill_lg
+        ws2["F31"] = "=SUM(F10:F30)"
+        ws2["F31"].number_format = '#,##0.00kr'
+        ws2["F31"].fill = fill_lg
+        ws2["G31"].fill = fill_lg
+
+        start_cell = "B9"
+        end_cell = "G31"
+        cell_range = ws2[start_cell:end_cell]
+
+        for row in cell_range:
+            for cell in row:
+                cell.border = border_A
+
+
+    ####################################################################################################################
+    ## Page for bruk av eget utstyr
+    if "Bruk av eget utstyr" in cost_options:
+        ws3 = wb.create_sheet("Bruk av eget utstyr")
+        ws3.sheet_view.showGridLines = False
+
+        ws3["B2"] = f"Timekostnader"
+        ws3["B2"].font = Font(size=20, bold=True)
+
+        ws3.column_dimensions['A'].width = 5
+        ws3.column_dimensions['B'].width = 20
+        ws3.column_dimensions['C'].width = 20
+        ws3.column_dimensions['D'].width = 20
+        ws3.column_dimensions['E'].width = 20
+        ws3.column_dimensions['F'].width = 20
+        ws3.column_dimensions['G'].width = 20
+        ws3.column_dimensions['H'].width = 20
+        ws3.column_dimensions['I'].width = 20
+
+        ws3["B4"] = "Selskap"
+        ws3["E4"] = juridisknavn
+        ws3["E4"].alignment = Alignment(horizontal="right")
+
+        ws3["B5"] = "Prosjektnummer"
+        ws3["E5"] = project_number
+        ws3["E5"].alignment = Alignment(horizontal="right")
+
+        ws3["B6"] = "Prosjekttittel"
+        ws3["E6"] = project_title
+        ws3["E6"].alignment = Alignment(horizontal="right")
+
+        start_cell = "B4"
+        end_cell = "E6"
+        cell_range = ws3[start_cell:end_cell]
+
+        for row in cell_range:
+            for cell in row:
+                cell.border = border_u
+
+        # Timer table
+        ws3["B9"] = "Kostnadstype (type renter)"
+        ws3["B9"].font = Font(size=12, bold=True)
+        ws3["B9"].fill = fill_lg
+
+        ws3["C9"] = "Kreditor"
+        ws3["C9"].font = Font(size=12, bold=True)
+        ws3["C9"].fill = fill_lg
+
+        ws3["D9"] = "Bilagsnummer"
+        ws3["D9"].font = Font(size=12, bold=True)
+        ws3["D9"].fill = fill_lg
+
+        ws3["E9"] = "Gjeld relatert til prosjektet"
+        ws3["E9"].font = Font(size=12, bold=True)
+        ws3["E9"].fill = fill_lg
+
+        ws3["F9"] = "Rentesats"
+        ws3["F9"].font = Font(size=12, bold=True)
+        ws3["F9"].fill = fill_lg
+
+        ws3["G9"] = "Dato"
+        ws3["G9"].font = Font(size=12, bold=True)
+        ws3["G9"].fill = fill_lg
+
+        ws3["H9"] = "Beløp"
+        ws3["H9"].font = Font(size=12, bold=True)
+        ws3["H9"].fill = fill_lg
+
+        ws3["I9"] = "Kommentar"
+        ws3["I9"].font = Font(size=12, bold=True)
+        ws3["I9"].fill = fill_lg
+
+        for i in range(5):
+            ws3[f"F{10+i}"].alignment = Alignment(horizontal="right")
+            ws3[f"F{10+i}"].number_format = '#,##0.00kr' 
+
+        ws3["B16"] = "Sum"
+        ws3["B16"].fill = fill_lg
+        ws3["C16"].fill = fill_lg
+        ws3["D16"].fill = fill_lg
+        ws3["E16"].fill = fill_lg
+        ws3["F16"].fill = fill_lg
+        ws3["G16"].fill = fill_lg
+        ws3["H16"].fill = fill_lg
+        ws3["H16"] = "=SUM(H10:H15)"
+        ws3["H16"].number_format = '#,##0.00kr'
+        ws3["I16"].fill = fill_lg
+
+        start_cell = "B9"
+        end_cell = "I16"
+        cell_range = ws3[start_cell:end_cell]
+
+        for row in cell_range:
+            for cell in row:
+                cell.border = border_A
+
+        ws3["B17"] = "Belastning på prosjekt: Hvor mange dager/ timer etc. er utstyret benyttet på prosjektet"
+        ws3["B18"] = "Annen belastning: Hvor mange dager/timer etc. er utstyret benyttet til andre formål enn prosjektet. Herunder også dødtid. Obs: om utstyret utelukkende er benyttet til prosjektet kan hele avskrivingskosten medtas i prosjektregnskapet. "
+
+
+    ####################################################################################################################
+    ## Page for Kapitalkostnader
+    if "Kapitalkostnader" in cost_options:
+        ws4 = wb.create_sheet("Kapitalkostnader")
+        ws4.sheet_view.showGridLines = False
+
+        ws4["B2"] = f"Timekostnader"
+        ws4["B2"].font = Font(size=20, bold=True)
+
+        ws4.column_dimensions['A'].width = 3
+        ws4.column_dimensions['B'].width = 20
+        ws4.column_dimensions['C'].width = 25
+        ws4.column_dimensions['D'].width = 25
+        ws4.column_dimensions['E'].width = 30
+        ws4.column_dimensions['F'].width = 30
+        ws4.column_dimensions['G'].width = 20
+        ws4.column_dimensions['H'].width = 15
+        ws4.column_dimensions['I'].width = 15
+
+        ws4["B4"] = "Selskap"
+        ws4["E4"] = juridisknavn
+        ws4["E4"].alignment = Alignment(horizontal="right")
+
+        ws4["B5"] = "Prosjektnummer"
+        ws4["E5"] = project_number
+        ws4["E5"].alignment = Alignment(horizontal="right")
+
+        ws4["B6"] = "Prosjekttittel"
+        ws4["E6"] = project_title
+        ws4["E6"].alignment = Alignment(horizontal="right")
+
+        start_cell = "B4"
+        end_cell = "E6"
+        cell_range = ws4[start_cell:end_cell]
+
+        for row in cell_range:
+            for cell in row:
+                cell.border = border_u
+
+        # Timer table
+        ws4["B9"] = "Utstyr"
+        ws4["B9"].font = Font(size=12, bold=True)
+        ws4["B9"].fill = fill_lg
+
+        ws4["C9"] = "Enhet (timer/dager etc.)"
+        ws4["C9"].font = Font(size=12, bold=True)
+        ws4["C9"].fill = fill_lg
+
+        ws4["D9"] = "Belastning på prosjekt"
+        ws4["D9"].font = Font(size=12, bold=True)
+        ws4["D9"].fill = fill_lg
+
+        ws4["E9"] = "Annen belastning pluss dødtid"
+        ws4["E9"].font = Font(size=12, bold=True)
+        ws4["E9"].fill = fill_lg
+
+        ws4["F9"] = "Årets skattemessige avskrivning"
+        ws4["F9"].font = Font(size=12, bold=True)
+        ws4["F9"].fill = fill_lg
+
+        ws4["G9"] = "Eiendelsnummer"
+        ws4["G9"].font = Font(size=12, bold=True)
+        ws4["G9"].fill = fill_lg
+
+        ws4["H9"] = "Sum"
+        ws4["H9"].font = Font(size=12, bold=True)
+        ws4["H9"].fill = fill_lg
+
+        ws4["I9"] = "Kommentar"
+        ws4["I9"].font = Font(size=12, bold=True)
+        ws4["I9"].fill = fill_lg
+
+        for i in range(5):
+            ws4[f"F{10+i}"].alignment = Alignment(horizontal="right")
+            ws4[f"F{10+i}"].number_format = '#,##0.00kr' 
+
+        ws4["B16"] = "Sum"
+        ws4["B16"].fill = fill_lg
+        ws4["C16"].fill = fill_lg
+        ws4["D16"].fill = fill_lg
+        ws4["E16"].fill = fill_lg
+        ws4["F16"].fill = fill_lg
+        ws4["G16"].fill = fill_lg
+        ws4["H16"].fill = fill_lg
+        ws4["H16"] = "=SUM(H10:H15)"
+        ws4["H16"].number_format = '#,##0.00kr'
+        ws4["I16"].fill = fill_lg
+
+        start_cell = "B9"
+        end_cell = "I16"
+        cell_range = ws4[start_cell:end_cell]
+
+        for row in cell_range:
+            for cell in row:
+                cell.border = border_A
+
+        ws4["B17"] = "*Kapitalkostnader kan i følge Skatte ABC 2020 s. 566 inngå som del av fradragsgrunnlaget gitt at de ikke relateres til lønnskostnader og forutsatt at kapitalkostnadene har vært nødvendige for gjennomførselen av prosjektet. "
+        #ws4["B17"].alignment = Alignment(wrap_text=True)
 
 
 
     # save workbook
-    wb.save("testbook.xlsx")
-    # bio = io.BytesIO()
-    # wb.save(bio)
-    # return bio.getvalue()
+    # wb.save("testbook.xlsx")
+    bio = io.BytesIO()
+    wb.save(bio)
+    return bio.getvalue()
 
 
 

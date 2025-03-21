@@ -13,6 +13,13 @@ def create_timelister1(year: int, quarter: int, selskap: str, prosjekttittel: st
     ws0.sheet_view.showGridLines = False
     ws0.title = "Rapport"
 
+    ws0.column_dimensions["B"].width = 20
+    ws0.column_dimensions["C"].width = 20
+    ws0.column_dimensions["D"].width = 20
+    ws0.column_dimensions["E"].width = 20
+    ws0.column_dimensions["F"].width = 20
+    ws0.column_dimensions["G"].width = 20
+
     ws0["B2"] = f"Timelister {year} - Q{quarter}"
     ws0["B2"].font = Font(size=20, bold=True)
 
@@ -22,7 +29,7 @@ def create_timelister1(year: int, quarter: int, selskap: str, prosjekttittel: st
     ws0["B6"] = "Prosjektleder"
 
     start_cell = "B3"
-    end_cell = "I6"
+    end_cell = "E6"
     cell_range = ws0[start_cell:end_cell]
 
     border = Border(bottom=Side(style="thin"))
@@ -30,10 +37,10 @@ def create_timelister1(year: int, quarter: int, selskap: str, prosjekttittel: st
         for cell in row:
             cell.border = border
 
-    ws0.merge_cells("D3:I3")
-    ws0.merge_cells("D4:I4")
-    ws0.merge_cells("D5:I5")
-    ws0.merge_cells("D6:I6")
+    ws0.merge_cells("D3:F3")
+    ws0.merge_cells("D4:F4")
+    ws0.merge_cells("D5:F5")
+    ws0.merge_cells("D6:F6")
 
     ws0["D3"].alignment = Alignment(horizontal="left")
     ws0["D4"].alignment = Alignment(horizontal="left")
@@ -289,8 +296,8 @@ def create_timelister1(year: int, quarter: int, selskap: str, prosjekttittel: st
             cell.border = border4
 
 
-    # save workbook
-    #wb.save("testbook.xlsx")
+    ###save workbook
+    # wb.save("testbook.xlsx")
     bio = io.BytesIO()
     wb.save(bio)
     return bio.getvalue()
