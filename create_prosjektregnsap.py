@@ -2,8 +2,11 @@ from openpyxl.workbook import Workbook
 from openpyxl.styles import Font, Color, Alignment, Border, Side, PatternFill
 import io
 
+
+# tar inn alle nødvendige parametre for å kunne sette opp et prosjektrenskap
+# alle disse parametrene blir sendt inn i funksjonen som blir kalt på i front end (FrontTimelister.py)
 def create_prosjektregnskap1(year: int, juridisknavn: str, project_number: int, project_title: str, godkjent_periode: str, status_dato: str, status: str, godkjent_dato: str, kategori: str, selskap_vansker: str, cost_options):
-    wb = Workbook()
+    wb = Workbook() # instansier en ny workbook
 
     ###################### CREATE FRONT PAGE (REPORT) (Sheet 0) ##########################
     ws0 = wb.active

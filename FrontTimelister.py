@@ -7,6 +7,7 @@ from full_download import download_all
 
 
 st.title("Front Generation - Rapportering :memo:")
+########### INITIALIZE ALL SESSION STATE VARIABLES ###########
 
 # Initialize the flag in session state if it doesn't exist
 if "flag" not in st.session_state:
@@ -62,12 +63,11 @@ if "erkleringdato" not in st.session_state:
 
 
 
+tab1, tab2, tab3, tab4 = st.tabs(["Timelister", "Prosjektregnskap", "Erklæring", "Full nedlastning"]) # DEFINE THE TABS
 
-
-
-tab1, tab2, tab3, tab4 = st.tabs(["Timelister", "Prosjektregnskap", "Erklæring", "Full nedlastning"])
-
+# TIMELISTER TAB
 with tab1:
+    # FRONTEND INPUT VARIABLES FOR GENERATING TIMELISTER 
     year = st.number_input("Årstall", min_value=2020, max_value=2050, value=st.session_state.year)
     selskapsnavn = st.text_input("Selskapsnavn")
     st.session_state.selskapsnavn = selskapsnavn
@@ -89,7 +89,6 @@ with tab1:
 
     prosjektbeskrivelse = st.text_area("Prosjektbeskrivelse", height=700, help="Denne boksen skal inneholde prosjektets hovedmål, samt tittel på arbeidspakker og aktiviteter")
     st.session_state.prosjektbeskrivelse = prosjektbeskrivelse
-
 
 
     if st.session_state.flag == False:
@@ -142,8 +141,9 @@ with tab1:
             key="download3"
         )
 
-
+# PROSJEKTREGNSKAP TAB
 with tab2:
+    # FRONTEND INPUT VARIABLES FOR GENERATING PROSJEKTREGNSKAP
     year1 = st.number_input("Årstall", min_value=2020, max_value=2050, value=st.session_state.year, help="Det året du vil at prosjektregnskapet skal gjelde for", key="year1")
     selskapsnavn1 = st.text_input("Juridisk selskapsnavn", value=st.session_state.selskapsnavn, key="selskapsnavn1", help="Husk å inkludere AS/ASA")
     prosjekttittel1 = st.text_input("Prosjekttittel", value=st.session_state.prosjekttittel, key="prosjekttittel1")
@@ -202,8 +202,9 @@ with tab2:
         )
 
 
-
+# ERKLERING TAB
 with tab3:
+    # FRONTEND INPUT VARIABLES FOR GENERATING ERKLERING
     year2 = st.number_input("Årstall", min_value=2020, max_value=2050, value=st.session_state.year, help="Det året du vil at prosjektregnskapet skal gjelde for", key="year2")
     
     erkleringdato = st.text_input("Dato for erklæring")
@@ -231,6 +232,7 @@ with tab3:
         )
 
 
+# DOWNLOAD ALL TAB (KOMPRIMERT MAPPE .ZIP)
 with tab4:
     st.write("Last ned komprimert mappe med alle filer :rocket:")
 
