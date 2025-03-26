@@ -1,7 +1,9 @@
 # FrontTimelister
 Repository for Front Generation - Timelister
+The code is written quick and dirty (to save costs), but works as intended.
+Should probably be refactored and deployed to a production server if frequently used and bugs are discovered - streamlit should be sufficient for this application.
+There are some performance issues related to the download buttons and rendering of multiple of these buttons simultaneously (which happens if you write the password (authenticate) in the first page.)
 
-The code is written quick and dirty, but works as intended. 
 The structure of code is the following:
 1. Main file: FrontTimelister.py (this file runs all the code and imports the necessary functions from the other code files)
 2. supporting_functions.py - is a small library of functions that execute small specific tasks. The other files import some of these specific functions. 
