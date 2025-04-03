@@ -1,3 +1,4 @@
+import datetime
 from datetime import date, timedelta
 
 
@@ -78,7 +79,12 @@ def get_workers(num_workers):
     return workers
 
 
+def get_current_year():
+    return datetime.datetime.now().year
+
+
 
 if __name__ == "__main__":
-    quarters = get_dates_in_quarter(2025, 1)
-    print(quarters)
+    # quarters = get_dates_in_quarter(2025, 1)
+    # print(quarters)
+    print(get_current_year())

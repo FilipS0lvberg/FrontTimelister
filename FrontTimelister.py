@@ -1,5 +1,5 @@
 import streamlit as st
-from supporting_functions import get_workers
+from supporting_functions import get_workers, get_current_year
 from create_timelister import create_timelister1
 from create_prosjektregnsap import create_prosjektregnskap1
 from write_erklering import write_erklering1
@@ -14,7 +14,7 @@ if "flag" not in st.session_state:
     st.session_state.flag = False
 
 if "year" not in st.session_state:
-    st.session_state.year = 2025
+    st.session_state.year = get_current_year()
 
 if "selskapsnavn" not in st.session_state:
     st.session_state.selskapsnavn = ""
